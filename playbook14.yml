@@ -1,0 +1,29 @@
+---
+- name: implementation handlers
+  hosts: all
+  tasks:
+   - name: install apache2
+     apt: 
+      name: apache2
+      state: absent
+      update_cache: no
+     notify: check url response 
+   - name: edit index.html file
+     copy: 
+      content: "welcome to the nalgonda dist in telangana state in india"
+      dest: /var/www/html/index.html
+     notify: restart apache2
+  handlers:
+   - name: restart apache2
+     service: 
+      name: apache2
+      state: restarted
+   - name: check url response
+     uri:
+      url: "{{item}}"  
+      status_code: 200
+     with_items:
+      - http: //172.31.31.130
+      - http: //172.31.18.35
+
+...

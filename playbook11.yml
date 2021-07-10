@@ -1,0 +1,12 @@
+---
+- name: implementaion of loops in deprecation warning shows 
+  hosts: all
+  tasks: 
+   - name: installing_ softwares
+     apt: 
+      name:  ["tree", "git", "maven", "openjdk-8-jdk"]
+      state: absent
+      update_cache: no
+    
+...        
+

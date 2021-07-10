@@ -1,0 +1,10 @@
+---
+- name: install firewall 
+  hosts: 172.31.30.178
+  tasks:
+   - name: firewalld installation
+     apt:
+      name: firewalld
+      state: present
+      update_cache: yes
+...      

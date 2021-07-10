@@ -1,0 +1,75 @@
+---
+- name: setup required software for CI-CD
+  hosts: all
+  tasks: 
+   - name: install s/W'S
+     apt:
+      name: "{{item.a}}" 
+      state: present
+      update_cache: "{{item.b}}" 
+     with_items:
+      - {a: openjdk-8-jdk,b: yes}
+      - {a: git,b: no}
+      - {a: maven,b: no} 
+      - {a: tomcat9,b: no}
+      - {a: tomcat9-admin,b: no}
+
+- name: contineous download and continues build
+  hosts: devserver
+  tasks:
+   - name: create new older 
+     file: 
+      name: /home/ubuntu/demo 
+      state: directory 
+
+   - name: download development code from git
+     git:
+      repo: https://github.com/intelliqittrainings/maven.git
+      dest: /home/ubuntu/demo/
+
+   - name: build the code and create an artifact 
+     shell: cd /home/ubuntu/demo/;mvn package 
+
+   - name: fetch artifact from devserver to controller
+     fetch: 
+      src: /home/ubuntu/demo/webapp/target/webapp.war
+      dest: /tmp
+ 
+- name: contineous deployment and contineous testing
+  hosts: qaserver
+  tasks:
+   - name: deploy artifact into tomcat on qaserver
+     copy:
+      src: /tmp/172.31.20.241/home/ubuntu/demo/webapp/target/webapp.war
+      dest: /var/lib/tomcat9/webapps/qaapp.war
+
+   - name: Download the selenium scripts
+     git:
+      repo: https://github.com/intelliqittrainings/FunctionalTesting.git
+      dest: /tmp/test-git
+
+   - name: Execute the selenium scripts
+     shell: java -jar /tmp/test-git/testing.jar 
+
+- name: contineous Delivery
+  hosts: prodserver
+  tasks:
+   - name: copy artifact into tomcat on prodservers
+     copy:
+      src: /tmp/172.31.20.241/home/ubuntu/demo/webapp/target/webapp.war
+      dest: /var/lib/tomcat9/webapps/prodapp.war
+...      
+
+
+
+
+
+
+
+
+
+
+
+...
+
+

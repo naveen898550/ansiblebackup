@@ -1,0 +1,10 @@
+---
+- name: implementing lopps
+  hosts: all
+  tasks:
+   - name: creating_tree  
+     apt:
+      name: tree
+      state: absent
+      update_cache: no
+...      

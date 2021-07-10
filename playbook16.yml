@@ -1,0 +1,20 @@
+---
+- name: installing git using ubuntu and centos servers
+  hosts: all
+  tasks:
+   - block:
+      - name: install git using apt module
+        apt: 
+         name: git
+         state: absent
+         update_cache: no
+     rescue:
+      - name: install git using yum module
+        yum:
+         name: git
+         state: absent
+         update_cache: no      
+      
+      
+      
+...     

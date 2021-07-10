@@ -1,0 +1,21 @@
+---
+- name: creating multiple user and file or dir into home dir
+  hosts: all 
+  tasks: 
+   - name: creating_users
+     user:
+      name: "{{item.a}}"  
+      password: "{{item.b}}"  
+      home: "{{item.c}}"  
+     with_items: 
+      - {a: pnr,b: bava,c: /home/ubuntu/pnr}
+      - {a: bubby,b: fruity,c: /home/ubuntu/bubby}
+      - {a: sunil,b: rmsi,c: /home/ubuntu/suni} 
+   - name: copy of file/dir in to home dir
+     copy: 
+      src: "{{item.a}}" 
+      dest: "{{item.b}}" 
+     with_items:
+      - {a: /etc/passwd,b: /home/ubuntu/pnr} 
+      - {a: /etc/passwd,b: /home/ubuntu/bubby}  
+      - {a: /etc/passwd,b: /home/ubuntu/sunil}    

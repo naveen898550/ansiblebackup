@@ -1,0 +1,20 @@
+---
+- name: error handling 
+  hosts: all
+  tasks:
+   - block:
+      - name: installing tomcat8
+        apt: 
+         name: tomcat8
+         state: present
+        update_cache: yes
+     rescue:
+      - name: installing tomcat9
+        apt:
+         name: tomcat9
+         state: present
+         update_cache: yes      
+      
+      
+      
+...     

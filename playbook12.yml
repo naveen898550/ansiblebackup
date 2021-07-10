@@ -1,0 +1,15 @@
+---
+- name: implementation of loop
+  hosts: all
+  tasks:
+   - name: installing s/w aplication 
+     apt:
+      name: "{{item.a}}" 
+      state: "{{item.b}}"  
+      update_cache: "{{item.c}}"  
+     with_items:
+      - {a: git,b: present,c: no}
+      - {a: maven,b: present,c: no}
+      - {a: tree,b: present,c: no}
+      - {a: openjdk-8-jdk,b: present,c: no}
+...       

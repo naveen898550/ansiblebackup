@@ -1,0 +1,21 @@
+---
+- name: check file tomcat9 is present if not present install tomcat10
+  hosts: all
+  tasks:
+   - name: check up tomcat9 
+     apt:
+      name: tomcat9
+      state: present
+      update_cache: yes
+
+     register: a
+   - name: display output of above module
+     debug: 
+      var: a
+
+   - name: install tomcat10
+     apt:
+      name: tomcat10
+      state: present
+     when: a.changed == true 
+...      
